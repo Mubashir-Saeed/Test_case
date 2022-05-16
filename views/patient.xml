@@ -1,0 +1,80 @@
+<odoo>
+    <record model="ir.ui.view" id="patient_tree">
+        <field name="name">hospital.patient.tree</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <tree string="Patient">
+                <field name="lab_id"/>
+                <field name="patient_name"/>
+                <field name="patient_age"/>
+                <field name="patient_gender"/>
+                <field name="patient_address"/>
+                <field name="patient_mobile"/>
+            </tree>
+        </field>
+    </record>
+    <record model="ir.ui.view" id="patient_form">
+        <field name="name">hospital.patient.form</field>
+        <field name="model">hospital.patient</field>
+        <field name="arch" type="xml">
+            <form string="Patient">
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="open_hospital_patient"
+                                type="object" class="oe_stat_button" icon="fa-copy">
+                            <field name="patient_test_count" string="Test" widget="statinfo"/>
+                        </button>
+                    </div>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="lab_id" readonly='1'/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="name" invisible="1"/>
+                            <field name="patient_name"/>
+                            <field name="patient_age"/>
+                            <field name="patient_gender"/>
+                        </group>
+                        <group>
+                            <field name="patient_mobile"/>
+                        </group>
+                        <group>
+                            <field name="patient_address" groups="base.group_no_one" placeholder="Street 1..."/>
+                            <label for="" name="address_name">
+                                <b invisible="1">street</b>
+                            </label>
+                            <div class="o_address_format">
+                                <field name="street2" class="o_address_street" placeholder="Street 2..."/>
+                                <field name="city" class="o_address_city" placeholder="City"/>
+                                <field name="state_id" class="o_address_city" placeholder="State ID"/>
+                                <field name="zip" class="o_address_zip" placeholder="ZIP"/>
+                                <field name="country_id" class="o_address_country" placeholder="Country"/>
+                            </div>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+      <!--    action menu-->
+    <record id="action_patient" model="ir.actions.act_window">
+        <field name="name">Hospital Patient</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.patient</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="O_view_nocontent_smiling_face">
+                Create your First Patient!
+            </p>
+        </field>
+    </record>
+    <menuitem id="hospital_root" name="Hospital" sequence="0" web_icon="om_hospital.static/description/icon.png"/>
+    <menuitem id="hospital_patient" name="Patient" parent="hospital_root" sequence="0" action="action_patient"></menuitem>
+</odoo>

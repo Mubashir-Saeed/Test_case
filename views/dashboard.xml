@@ -1,0 +1,37 @@
+<odoo>
+    <record model="hospital.dashboard" id="my_record_01">
+        <field name="dashboard_patient_id"/>
+    </record>
+
+    <record model="ir.ui.view" id="dashboard_form">
+        <field name="name">hospital.dashboard.form</field>
+        <field name="model">hospital.dashboard</field>
+        <field name="arch" type="xml">
+            <form string="Dashboard">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="dashboard_patient_id"/>
+                            <field name="dashboard_report_ids"/>
+                        </group>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_dashboard" model="ir.actions.act_window">
+        <field name="name">Hospital Dashboard</field>
+        <field name="res_model">hospital.dashboard</field>
+        <field name="view_mode">form</field>
+        <field name="res_id" ref="om_hospital.my_record_01"/>
+        <field name="target">inline</field>
+        <field name="help" type="html">
+            <p class="O_view_nocontent_smiling_face">
+                Create your First Dashboard!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="hospital_dashboard" name="Dashboard" parent="hospital_root" sequence="3" action="action_dashboard"/>
+</odoo>

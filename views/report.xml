@@ -1,0 +1,80 @@
+<odoo>
+    <record model="ir.ui.view" id="report_tree">
+        <field name="name">hospital.report.tree</field>
+        <field name="model">hospital.report</field>
+        <field name="arch" type="xml">
+            <tree string="Report">
+                <field name="lab_id"/>
+                <field name="report_patient_id"/>
+                <field name="report_delivery_date"/>
+                <field name="report_total_price"/>
+                <field name="report_type"/>
+            </tree>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="report_form">
+        <field name="name">hospital.report.form</field>
+        <field name="model">hospital.report</field>
+        <field name="arch" type="xml">
+            <form string="Report">
+                <header>
+                    <button name="action_process" type="object" string="Process" class="oe_highlight" states="draft"/>
+                    <button name="action_deliver" type="object" string="Delivered" class="oe_highlight" states="process"/>
+                    <button name="delete_lines" type="object" string="Canceled" states="deliver" class="oe_highlight"/>
+                    <field name="state" statusbar_visible="draft,process,deliver,delete" widget="statusbar"/>
+                </header>
+                <sheet>
+                    <div class="oe_title">
+                        <h1>
+                            <field name="lab_id" readonly='1'/>
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="report_patient_id" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}"/>
+                        </group>
+                        <group>
+                            <field name="report_date" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}"/>
+                            <field name="report_delivery_date" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}"/>
+                        </group>
+                        <group>
+                            <field name="report_test_id" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}">
+                                <tree editable="bottom">
+                                    <field name="patient_report" invisible="1"/>
+                                    <field name="patient_test"/>
+                                    <field name="patient_test_name"/>
+                                    <field name="test_price" sum="Total Price"/>
+                                    <field name="test_duration"/>
+                                </tree>
+                            </field>
+                        </group>
+                        <group>
+                            <field name="report_total_price" force_save="1" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}"/>
+                            <field name="report_type" attrs="{'readonly': [('state', 'in', ['deliver','delete'])]}"/>
+                        </group>
+                    </group>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids" widget="mail_followers"/>
+                    <field name="activity_ids" widget="mail_activity"/>
+                    <field name="message_ids" widget="mail_thread" options="{'post_refresh': 'recipients'}"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_report" model="ir.actions.act_window">
+        <field name="name">Hospital Report</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">hospital.report</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="O_view_nocontent_smiling_face">
+                Create your First Report!
+            </p>
+        </field>
+    </record>
+
+    <menuitem id="hospital_report" name="Report" parent="hospital_root" sequence="2" action="action_report"/>
+</odoo>
